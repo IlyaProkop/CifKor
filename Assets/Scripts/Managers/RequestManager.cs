@@ -12,7 +12,7 @@ public class RequestManager
     }
 
     public void AddRequest(Func<CancellationToken, UniTask> request)
-    {
+    {       
         _requestQueue.AddRequest(request);
     }
 
@@ -26,7 +26,7 @@ public class RequestManager
         _requestQueue.ClearQueue();
     }
 
-    public async UniTask<T> ExecuteRequest<T>(Func<CancellationToken, UniTask<T>> request)
+    public async UniTask<T> ExecuteRequest<T>(Func<CancellationToken, UniTask<T>> request, Action onLoadingStart = null, Action onLoadingEnd = null)
     {
         var taskCompletionSource = new UniTaskCompletionSource<T>();
 
@@ -34,12 +34,17 @@ public class RequestManager
         {
             try
             {
+                onLoadingStart?.Invoke(); 
                 var result = await request(token);
                 taskCompletionSource.TrySetResult(result);
             }
             catch (Exception ex)
             {
                 taskCompletionSource.TrySetException(ex);
+            }
+            finally
+            {
+                onLoadingEnd?.Invoke();
             }
         });
 

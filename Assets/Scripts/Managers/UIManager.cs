@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject weatherPanel; 
     [SerializeField] private GameObject factsPanel;  
+
     private ServiceManager _serviceManager;
 
     [Inject]
@@ -24,12 +25,10 @@ public class UIManager : MonoBehaviour
     }
 
     private void Start()
-    {
-        
+    {        
         _serviceManager.SetActiveService(ServiceManager.ActiveService.Facts);
         UpdatePanels();
     }
-
     
     public void SwitchToWeather()
     {

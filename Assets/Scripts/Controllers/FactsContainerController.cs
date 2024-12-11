@@ -6,11 +6,12 @@ public class FactsContainerController
 {
     private readonly IFactsService _factsService;
     private readonly FactsContainerModel _factsContainer;
+    
 
     public FactsContainerController(IFactsService factsService, FactsContainerModel factsContainer)
     {
         _factsService = factsService;
-        _factsContainer = factsContainer;
+        _factsContainer = factsContainer;       
     }
 
     public async void FetchFacts()
@@ -50,8 +51,7 @@ public class FactsContainerController
     }
 
     private void ShowLoader(bool show)
-    {
-        Debug.Log(show ? "Showing loader" : "Hiding loader");
-      
+    {     
+        
     }
 }

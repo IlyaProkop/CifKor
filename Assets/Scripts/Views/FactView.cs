@@ -30,7 +30,6 @@ public class FactView : MonoBehaviour
         this.factId.text = factNumber.ToString();
         this.factName.text = factName;
         _factId = factId;
-
         
         _factController = _factControllerFactory.Create(_factId, _popUpController);
     }

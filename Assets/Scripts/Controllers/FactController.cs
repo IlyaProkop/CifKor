@@ -10,8 +10,7 @@ public class FactController
 
     public FactController(IFactsService factsService)
     {
-        _factsService = factsService;
-        
+        _factsService = factsService;        
     }   
 
     public void Initialize(string factId, PopUpController popUpController)

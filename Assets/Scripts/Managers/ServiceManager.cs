@@ -25,9 +25,7 @@ public class ServiceManager
         if (CurrentService == service)
             return;
 
-
         _requestManager.CancelCurrentRequest();
-
 
         switch (CurrentService)
         {
@@ -39,9 +37,7 @@ public class ServiceManager
                 break;
         }
 
-
         CurrentService = service;
-
 
         switch (service)
         {

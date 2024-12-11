@@ -12,7 +12,6 @@ public class LoaderController
         _loaderModel = loaderModel;
         _loaderView = loaderView;
     }
-
    
     public void ShowGlobalLoader()
     {
@@ -25,7 +24,6 @@ public class LoaderController
         _loaderModel.SetGlobalLoader(false);
         _loaderView.HideGlobalLoader();
     }
-
     
     public void ShowFactLoader(string factId, Transform parent)
     {

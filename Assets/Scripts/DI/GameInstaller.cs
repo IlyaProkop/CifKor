@@ -11,21 +11,25 @@ public class GameInstaller : MonoInstaller
         //Uitls
         Container.Bind<RequestQueue>().AsSingle();
 
+        //Loader
+        Container.Bind<LoaderModel>().AsSingle();
+        Container.Bind<LoaderController>().AsSingle();
+        Container.Bind<LoaderView>().FromComponentInHierarchy().AsSingle();
 
-        //Менеджеры
+        //Managers
         Container.Bind<RequestManager>().AsSingle();
         Container.Bind<ServiceManager>().AsSingle();
         Container.Bind<UIManager>().FromComponentInHierarchy().AsSingle();
 
-        // Сервисы
+        //Services
         Container.Bind<IWeatherService>().To<WeatherService>().AsSingle();
         Container.Bind<IFactsService>().To<FactsService>().AsSingle();
 
-        //Модели
+        //Models
         Container.Bind<PopUpModel>().AsSingle();
         Container.Bind<WeatherModel>().AsSingle();
 
-        // Контроллеры
+        //Controllers
         Container.Bind<WeatherController>().AsSingle();
         Container.Bind<FactsContainerController>().AsSingle();
         Container.Bind<PopUpController>().AsSingle();
@@ -33,17 +37,15 @@ public class GameInstaller : MonoInstaller
             .To<FactController>()
             .AsTransient();
 
-
         // Views
         Container.Bind<WeatherView>().FromComponentInHierarchy().AsSingle();
         Container.Bind<PopUpView>().FromComponentInHierarchy().AsSingle();
 
-        // Контейнер Fact
+        //Container Fact
         Container.Bind<FactsContainerModel>().FromComponentInHierarchy().AsSingle();
 
-        // Пул FactView
+        //Pool FactView
         Container.Bind<FactViewPool>().AsSingle()
     .WithArguments(factPrefab, factsContainer);
-
     }
 }
