@@ -1,8 +1,16 @@
+using System;
+using System.Diagnostics;
+using UniRx;
+
+
+
 public class WeatherController
 {
     private readonly IWeatherService _weatherService;
     private readonly WeatherView _weatherView;
     private readonly WeatherModel _weatherModel;
+
+    private IDisposable _weatherUpdateSubscription;
 
     public WeatherController(IWeatherService weatherService, WeatherView weatherView, WeatherModel weatherModel)
     {
@@ -13,6 +21,7 @@ public class WeatherController
 
     public async void FetchWeather()
     {
+        UnityEngine.Debug.Log("FetchWeather");
         var weatherResponse = await _weatherService.GetWeatherAsync();
 
         if (weatherResponse?.Properties?.Periods == null || weatherResponse.Properties.Periods.Count == 0)
@@ -21,13 +30,31 @@ public class WeatherController
             return;
         }
 
-        
+
         var todayWeather = weatherResponse.Properties.Periods[0];
 
         SetModel(todayWeather);
         SetView();
 
     }
+
+    public void StartWeatherUpdates()
+    {        
+        StopWeatherUpdates();
+
+        FetchWeather();
+
+        _weatherUpdateSubscription = Observable
+            .Interval(TimeSpan.FromSeconds(5)) 
+            .Subscribe(_ => FetchWeather()); 
+    }
+
+    public void StopWeatherUpdates()
+    {        
+        _weatherUpdateSubscription?.Dispose();
+        _weatherUpdateSubscription = null;
+    }
+
     private void SetModel(WeatherPeriod todayWeather)
     {
         _weatherModel.Icon = todayWeather.Icon;

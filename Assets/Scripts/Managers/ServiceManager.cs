@@ -1,5 +1,3 @@
-using UnityEngine.UIElements;
-
 public class ServiceManager
 {
     private readonly WeatherController _weatherController;
@@ -27,29 +25,28 @@ public class ServiceManager
         if (CurrentService == service)
             return;
 
-        
+
         _requestManager.CancelCurrentRequest();
 
-       
+
         switch (CurrentService)
         {
             case ActiveService.Weather:
-                //_weatherController.StopWeatherUpdates();
+                _weatherController.StopWeatherUpdates();
                 break;
             case ActiveService.Facts:
-                
+
                 break;
         }
 
-        
+
         CurrentService = service;
 
-       
+
         switch (service)
         {
             case ActiveService.Weather:
-                // _weatherController.StartWeatherUpdates();
-                _weatherController.FetchWeather();
+                _weatherController.StartWeatherUpdates();
                 break;
             case ActiveService.Facts:
                 _factsContainerController.FetchFacts();
