@@ -1,6 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
-using Cysharp.Threading.Tasks;
 using UniRx;
 
 public class RequestQueue
@@ -11,7 +11,7 @@ public class RequestQueue
     public RequestQueue()
     {
         _requestSubject
-            .SelectMany(request => ProcessRequest(request).ToObservable()) 
+            .SelectMany(request => ProcessRequest(request).ToObservable())
             .Subscribe(
                 _ => { },
                 ex => UnityEngine.Debug.LogError($"Error in request: {ex.Message}")
@@ -34,7 +34,7 @@ public class RequestQueue
     public void ClearQueue()
     {
         CancelCurrentRequest();
-        _requestSubject.OnCompleted(); 
+        _requestSubject.OnCompleted();
     }
 
     private async UniTask ProcessRequest(Func<CancellationToken, UniTask> request)

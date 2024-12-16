@@ -10,6 +10,7 @@ public class GameInstaller : MonoInstaller
     {
         //Uitls
         Container.Bind<RequestQueue>().AsSingle();
+        Container.Bind<WebRequestHandler>().AsSingle();
 
         //Loader
         Container.Bind<LoaderModel>().AsSingle();

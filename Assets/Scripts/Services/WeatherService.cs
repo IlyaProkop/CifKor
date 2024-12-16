@@ -1,16 +1,16 @@
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
-using UnityEngine.Networking;
 
 public class WeatherService : IWeatherService
 {
     private readonly RequestManager _requestManager;
     private readonly LoaderController _loaderController;
+    private readonly WebRequestHandler _webRequestHandler;
 
-    public WeatherService(RequestManager requestManager, LoaderController loaderController)
+    public WeatherService(RequestManager requestManager, LoaderController loaderController, WebRequestHandler webRequestHandler)
     {
         _requestManager = requestManager;
         _loaderController = loaderController;
+        _webRequestHandler = webRequestHandler;
     }
 
     public async UniTask<WeatherResponse> GetWeatherAsync()
@@ -18,30 +18,9 @@ public class WeatherService : IWeatherService
         return await _requestManager.ExecuteRequest(async token =>
         {
             var url = "https://api.weather.gov/gridpoints/TOP/32,81/forecast";
-            using var request = UnityWebRequest.Get(url);
-
-            var response = await request.SendWebRequest().WithCancellation(token);
-
-            if (response.result != UnityWebRequest.Result.Success)
-            {
-                // Debug.LogError($"Failed to fetch weather: {response.error}");
-                return null;
-            }
-
-            try
-            {
-
-                var json = response.downloadHandler.text;
-                return JsonConvert.DeserializeObject<WeatherResponse>(json);
-            }
-            catch (JsonException ex)
-            {
-                //  Debug.LogError($"JSON parsing error: {ex.Message}");
-                return null;
-            }
+            return await _webRequestHandler.GetAsync<WeatherResponse>(url, token);
         },
-        _loaderController.ShowGlobalLoader,
-        _loaderController.HideGlobalLoader
-        );
+    _loaderController.ShowGlobalLoader,
+    _loaderController.HideGlobalLoader);
     }
 }

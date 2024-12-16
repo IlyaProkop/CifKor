@@ -1,6 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
-using Cysharp.Threading.Tasks;
 
 public class RequestManager
 {
@@ -12,7 +12,7 @@ public class RequestManager
     }
 
     public void AddRequest(Func<CancellationToken, UniTask> request)
-    {       
+    {
         _requestQueue.AddRequest(request);
     }
 
@@ -34,7 +34,7 @@ public class RequestManager
         {
             try
             {
-                onLoadingStart?.Invoke(); 
+                onLoadingStart?.Invoke();
                 var result = await request(token);
                 taskCompletionSource.TrySetResult(result);
             }
