@@ -29,7 +29,7 @@ public class FactsService : IFactsService
     }
 
     public async UniTask<BreedData> GetFactDetailsAsync(string factId)
-    {
+    {        
         Debug.Log("GetFactDetailsAsync");
         return await _requestManager.ExecuteRequest(async token =>
         {

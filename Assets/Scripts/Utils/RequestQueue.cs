@@ -7,6 +7,7 @@ public class RequestQueue
 {
     private readonly Subject<Func<CancellationToken, UniTask>> _requestSubject = new();
     private CancellationTokenSource _currentTokenSource;
+    private readonly CompositeDisposable _disposables = new();
 
     public RequestQueue()
     {
@@ -16,7 +17,7 @@ public class RequestQueue
                 _ => { },
                 ex => UnityEngine.Debug.LogError($"Error in request: {ex.Message}")
             )
-            .AddTo(new CompositeDisposable());
+            .AddTo(_disposables);
     }
 
     public void AddRequest(Func<CancellationToken, UniTask> request)
@@ -34,6 +35,7 @@ public class RequestQueue
     public void ClearQueue()
     {
         CancelCurrentRequest();
+        _disposables.Clear();
         _requestSubject.OnCompleted();
     }
 
